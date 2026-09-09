@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'Chart_model.dart'; // Import file model di sini
 
-void main() => runApp(const MyApp());
+void main() {
+  runApp(const MyApp());
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -9,156 +12,102 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Acara 16 - Core Components II',
-      home: const Acara16HomePage(),
+      title: 'Telegram UI',
+      theme: ThemeData(
+        primaryColor: const Color(0xFF5682a3),
+      ),
+      home: const TelegramHomePage(),
     );
   }
 }
 
-class Acara16HomePage extends StatefulWidget {
-  const Acara16HomePage({super.key});
-
-  @override
-  State<Acara16HomePage> createState() => _Acara16HomePageState();
-}
-
-class _Acara16HomePageState extends State<Acara16HomePage> {
-  int _selectedIndex = 0;
+class TelegramHomePage extends StatelessWidget {
+  const TelegramHomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Acara 16 - Layout & Assets'),
-        backgroundColor: Colors.teal,
+        title: const Text('Telegram'),
+        backgroundColor: const Color(0xFF5682a3),
+        actions: const [
+          Icon(Icons.search),
+          SizedBox(width: 15),
+        ],
       ),
+      // --- DRAWER TELEGRAM ---
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
-            const UserAccountsDrawerHeader(
-              accountName: Text("Mahasiswa TI"),
-              accountEmail: Text("mahasiswa@polije.ac.id"),
-              currentAccountPicture: CircleAvatar(
-                backgroundColor: Colors.white,
-                child: Icon(Icons.person, size: 40, color: Colors.teal),
+            UserAccountsDrawerHeader(
+              decoration: const BoxDecoration(color: Color(0xFF5682a3)),
+              currentAccountPicture: const CircleAvatar(
+                backgroundImage: AssetImage('assets/images/groot.jpg'),
               ),
-              decoration: BoxDecoration(color: Colors.teal),
+              accountName: const Text('Mahasiswa TI', style: TextStyle(fontWeight: FontWeight.bold)),
+              accountEmail: const Text('+62 812-3456-7890'),
             ),
             ListTile(
-              leading: const Icon(Icons.home),
-              title: const Text('Home'),
-              onTap: () => Navigator.pop(context),
+              leading: const Icon(Icons.group_outlined),
+              title: const Text('New Group'),
+              onTap: () {},
+            ),
+            ListTile(
+              leading: const Icon(Icons.person_outline),
+              title: const Text('Contacts'),
+              onTap: () {},
+            ),
+            ListTile(
+              leading: const Icon(Icons.call_outlined),
+              title: const Text('Calls'),
+              onTap: () {},
+            ),
+            ListTile(
+              leading: const Icon(Icons.bookmark_border),
+              title: const Text('Saved Messages'),
+              onTap: () {},
+            ),
+            ListTile(
+              leading: const Icon(Icons.settings_outlined),
+              title: const Text('Settings'),
+              onTap: () {},
             ),
           ],
         ),
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            // 1. Assets Gambar Lokal (Sesuai BKPM)
-            const Text(
-              '1. Assets Gambar Lokal',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+      // --- BODY: DAFTAR CHAT MENGGUNAKAN CHART_MODEL ---
+      body: ListView.separated(
+        itemCount: items.length,
+        separatorBuilder: (context, index) => const Divider(height: 1),
+        itemBuilder: (context, i) {
+          return ListTile(
+            leading: CircleAvatar(
+              radius: 25,
+              backgroundImage: AssetImage(items[i].profileUrl),
             ),
-            const SizedBox(height: 8),
-            Center(
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: Image.asset(
-                  'assets/images/groot.jpg', // Pastikan nama file gambar sesuai
-                  width: 150,
-                  height: 150,
-                  fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) {
-                    return Container(
-                      width: 150,
-                      height: 150,
-                      color: Colors.grey.shade300,
-                      child: const Center(
-                        child: Text(
-                          'Gambar lokal\nbelum ada',
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    );
-                  },
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  items[i].name,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
-              ),
-            ),
-            const Divider(height: 30),
-
-            // 2. Row Widget
-            const Text(
-              '2. Row Widget',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 8),
-            const Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                Chip(avatar: Icon(Icons.star), label: Text('Rating')),
-                Chip(avatar: Icon(Icons.thumb_up), label: Text('Like')),
-                Chip(avatar: Icon(Icons.share), label: Text('Share')),
+                Text(
+                  items[i].time,
+                  style: const TextStyle(color: Colors.grey, fontSize: 12),
+                ),
               ],
             ),
-            const Divider(height: 30),
-
-            // 3. Column Widget
-            const Text(
-              '3. Column Widget',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 8),
-            const Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text('• Item Pertama dalam Column'),
-                Text('• Item Kedua dalam Column'),
-              ],
-            ),
-            const Divider(height: 30),
-
-            // 4. Stack Widget
-            const Text(
-              '4. Stack Widget',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 8),
-            Center(
-              child: Stack(
-                alignment: Alignment.center,
-                children: <Widget>[
-                  Container(
-                    width: 200,
-                    height: 100,
-                    color: Colors.teal.shade200,
-                  ),
-                  Container(
-                    width: 150,
-                    height: 70,
-                    color: Colors.teal.shade400,
-                  ),
-                  const Text(
-                    'Teks Di Atas Stack',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ],
+            subtitle: Container(
+              padding: const EdgeInsets.only(top: 5.0),
+              child: Text(
+                items[i].message,
+                style: const TextStyle(color: Colors.grey, fontSize: 15.0),
               ),
             ),
-          ],
-        ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.teal,
-        onTap: (index) => setState(() => _selectedIndex = index),
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
-        ],
+          );
+        },
       ),
     );
   }
