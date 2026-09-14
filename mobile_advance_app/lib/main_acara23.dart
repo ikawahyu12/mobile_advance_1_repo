@@ -5,7 +5,7 @@ void main() {
   runApp(
     MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData.dark(), // Tema gelap Loki
+      theme: ThemeData.dark(),
       home: const Home(),
     ),
   );
@@ -47,15 +47,14 @@ class _HomeState extends State<Home> {
 
     return Scaffold(
       body: Container(
-        // GRADASI THEMA LOKI (Linear)
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: FractionalOffset.topCenter,
             end: FractionalOffset.bottomCenter,
             colors: [
-              Color(0xFF0F380F), // Hijau Gelap
-              Color(0xFF000000), // Hitam
-              Color(0xFF1E5631), // Hijau Emerald
+              Color(0xFF0F380F),
+              Color(0xFF000000),
+              Color(0xFF1E5631),
             ],
           ),
         ),
@@ -106,7 +105,7 @@ class _HomeState extends State<Home> {
   }
 }
 
-class Halamandua extends StatelessWidget {
+class Halamandua extends StatefulWidget {
   const Halamandua({
     Key? key,
     required this.gambar,
@@ -117,30 +116,61 @@ class Halamandua extends StatelessWidget {
   final Color colors;
 
   @override
+  State<Halamandua> createState() => _HalamanduaState();
+}
+
+class _HalamanduaState extends State<Halamandua> {
+  late Color warna;
+
+  @override
+  void initState() {
+    super.initState();
+    warna = widget.colors;
+  }
+
+  void _pilihannya(Pilihan pilihan) {
+    setState(() {
+      warna = pilihan.warna;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Loki Variant"),
         backgroundColor: const Color(0xFF0F380F),
+        actions: <Widget>[
+          PopupMenuButton<Pilihan>(
+            onSelected: _pilihannya,
+            itemBuilder: (BuildContext context) {
+              return listPilihan.map((Pilihan pilihan) {
+                return PopupMenuItem<Pilihan>(
+                  value: pilihan,
+                  child: Text(pilihan.teks),
+                );
+              }).toList();
+            },
+          ),
+        ],
       ),
       body: Stack(
         children: <Widget>[
-          // GRADASI THEMA LOKI (Radial/Melingkar)
           Container(
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               gradient: RadialGradient(
                 center: Alignment.center,
                 colors: [
-                  Color(0xFFFFD700), // Emas / Gold
-                  Color(0xFF0F380F), // Hijau Gelap
-                  Color(0xFF000000), // Hitam
+                  warna,
+                  const Color(0xFF0F380F),
+                  const Color(0xFF000000),
                 ],
               ),
             ),
           ),
           Center(
             child: Hero(
-              tag: gambar,
+              tag: widget.gambar,
               child: ClipOval(
                 child: SizedBox(
                   width: 200.0,
@@ -149,9 +179,9 @@ class Halamandua extends StatelessWidget {
                     child: InkWell(
                       onTap: () => Navigator.of(context).pop(),
                       child: Container(
-                        color: colors,
+                        color: warna,
                         child: Image.asset(
-                          "assets/images/$gambar",
+                          "assets/images/${widget.gambar}",
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -166,3 +196,16 @@ class Halamandua extends StatelessWidget {
     );
   }
 }
+
+// Data Model Pilihan Menu Warna
+class Pilihan {
+  const Pilihan({required this.teks, required this.warna});
+  final String teks;
+  final Color warna;
+}
+
+const List<Pilihan> listPilihan = <Pilihan>[
+  Pilihan(teks: "Red", warna: Colors.red),
+  Pilihan(teks: "Green", warna: Colors.green),
+  Pilihan(teks: "Blue", warna: Colors.blue),
+];
