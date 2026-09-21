@@ -41,7 +41,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
     if (picked != null) {
       _dobController.text =
-          '${picked.day.toString().padLeft(2, '0')}/${picked.month.toString().padLeft(2, '0')}/${picked.year}';
+      '${picked.day.toString().padLeft(2, '0')}/${picked.month.toString().padLeft(2, '0')}/${picked.year}';
     }
   }
 
@@ -194,11 +194,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   child: Wrap(
                     children: [
                       const Text('already have an account? ',
-                          style: TextStyle(color: AppColors.textGrey, fontSize: 13)),
+                          style: TextStyle(color: 
+                          AppColors.textGrey, 
+                          fontSize: 13)),
                       GestureDetector(
                         onTap: () {
-                          Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(builder: (_) => const LoginScreen()),
+                        Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(builder:
+                             (_) => const LoginScreen()),
                           );
                         },
                         child: const Text(
