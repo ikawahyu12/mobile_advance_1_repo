@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "610473016497",
+    "project_id": "login-1655d",
+    "storage_bucket": "login-1655d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:610473016497:android:45bcdee8edd3ce06d37690",
+        "android_client_info": {
+          "package_name": "com.example.acara_36"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6U3wyxwaAFrUrMh_V-SC2_5JQKlnFcaY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
