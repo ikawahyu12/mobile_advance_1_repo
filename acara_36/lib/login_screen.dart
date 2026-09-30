@@ -1,131 +1,144 @@
 import 'package:flutter/material.dart';
-
+import 'package:firebase_auth/firebase_auth.dart';
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
-
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  _LoginScreenState createState() => _LoginScreenState();
 }
-
 class _LoginScreenState extends State<LoginScreen> {
-  final _formKey = GlobalKey<FormState>();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  bool _obscureText = true;
-
-  @override
-  void dispose() {
-    _emailController.dispose();
-    _passwordController.dispose();
-    super.dispose();
-  }
-
-  void _submitLogin() {
-    if (_formKey.currentState!.validate()) {
-      // Proses login (Autentikasi API / Firebase / Local)
+  final TextEditingController _emailController =
+   TextEditingController();
+  final TextEditingController _passwordController =
+   TextEditingController();
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  registerSubmit() async {
+    try {
+      await _firebaseAuth.createUserWithEmailAndPassword(
+        email: _emailController.text.toString().trim(),
+        password: _passwordController.text,
+      );
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Proses Login...')),
+        const SnackBar(content: Text('Registrasi Berhasil!')),
+      );
+    } catch (e) {
+      print(e);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(e.toString())),
       );
     }
   }
-
+  loginSubmit() async {
+    try {
+      await _firebaseAuth.signInWithEmailAndPassword(
+        email: _emailController.text.toString().trim(),
+        password: _passwordController.text,
+      );
+      // Tampilkan pesan berhasil tanpa pindah halaman
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Login Berhasil!')),
+      );
+    } catch (e) {
+      print(e);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(e.toString())),
+      );
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Login System'),
-        centerTitle: true,
-      ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const SizedBox(height: 20),
-                const Icon(
-                  Icons.lock_person_rounded,
-                  size: 80,
+        padding: const EdgeInsets.all(10),
+        child: ListView(
+          children: <Widget>[
+            Container(
+              alignment: Alignment.center,
+              padding: const EdgeInsets.all(10),
+              margin: const EdgeInsets.only(top: 40),
+              child: const Text(
+                "Latihan Auth",
+                style: TextStyle(
                   color: Colors.blue,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 30,
                 ),
-                const SizedBox(height: 20),
-                // Field Email / Username
-                TextFormField(
-                  controller: _emailController,
-                  keyboardType: TextInputType.emailAddress,
-                  decoration: InputDecoration(
-                    labelText: 'Email / Username',
-                    hintText: 'Masukkan email atau username',
-                    prefixIcon: const Icon(Icons.email),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Email/Username tidak boleh kosong';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 16),
-                // Field Password
-                TextFormField(
-                  controller: _passwordController,
-                  obscureText: _obscureText,
-                  decoration: InputDecoration(
-                    labelText: 'Password',
-                    hintText: 'Masukkan password Anda',
-                    prefixIcon: const Icon(Icons.lock),
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        _obscureText ? Icons.visibility_off : Icons.visibility,
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          _obscureText = !_obscureText;
-                        });
-                      },
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Password tidak boleh kosong';
-                    }
-                    if (value.length < 6) {
-                      return 'Password minimal 6 karakter';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 24),
-                // Tombol Login
-                SizedBox(
-                  width: double.infinity,
-                  height: 48,
-                  child: ElevatedButton(
-                    onPressed: _submitLogin,
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
-                    ),
-                    child: const Text(
-                      'LOGIN',
-                      style: TextStyle(fontSize: 16),
-                    ),
-                  ),
-                ),
-              ],
+              ),
             ),
-          ),
+            Padding(
+              padding: const EdgeInsets.all(8),
+              child: Image.asset(
+                "assets/img/flutter.png",
+                height: 100,
+                width: 100,
+                errorBuilder: (context, error, stackTrace) {
+                  return const Icon(
+                    Icons.flutter_dash,
+                    size: 80,
+                    color: Colors.blue,
+                  );
+                },
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.all(10),
+              child: TextField(
+                controller: _emailController,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: "Username / Email",
+                ),
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.all(10),
+              child: TextField(
+                controller: _passwordController,
+                obscureText: true,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: "Password",
+                ),
+              ),
+            ),
+            TextButton(
+              onPressed: () {},
+              child: const Text("Forgot password"),
+            ),
+            Container(
+              height: 50,
+              padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+              child: ElevatedButton(
+                style: raisedButtonStyle,
+                child: const Text("Register"),
+                onPressed: () {
+                  registerSubmit();
+                },
+              ),
+            ),
+            const SizedBox(height: 10),
+            Container(
+              height: 50,
+              padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+              child: ElevatedButton(
+                style: raisedButtonStyle,
+                child: const Text("Login"),
+                onPressed: () {
+                  loginSubmit();
+                },
+              ),
+            ),
+          ],
         ),
       ),
     );
   }
 }
+
+final ButtonStyle raisedButtonStyle = ElevatedButton.styleFrom(
+  foregroundColor: Colors.white,
+  backgroundColor: Colors.blue,
+  minimumSize: const Size(88, 36),
+  padding: const EdgeInsets.symmetric(horizontal: 16),
+  shape: const RoundedRectangleBorder(
+    borderRadius: BorderRadius.all(Radius.circular(6)),
+  ),
+);
