@@ -1,4 +1,4 @@
-import 'package:flutter/foundation.dart'; // Untuk kIsWeb
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'login_screen.dart';
@@ -10,7 +10,7 @@ Future<void> main() async {
     await Firebase.initializeApp(
       options: const FirebaseOptions(
         apiKey: "AIzaSyD6U3wyxwaAFrUrMh_V-SC2_5JQKl1fCaY",
-        appId: "1:610473016497:android:45bcdee8edd3ce06d37690", // Atau isi App ID Web dari Firebase Console
+        appId: "ISI_APP_ID_WEB",
         messagingSenderId: "610473016497",
         projectId: "login-1655d",
         storageBucket: "login-1655d.firebasestorage.app",
