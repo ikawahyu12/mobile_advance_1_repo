@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'HomeScreen.dart';
+
 class LoginScreen extends StatefulWidget {
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -33,8 +35,10 @@ class _LoginScreenState extends State<LoginScreen> {
         password: _passwordController.text,
       );
       // Tampilkan pesan berhasil tanpa pindah halaman
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Login Berhasil!')),
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => const HomeScreen(),
+        ),
       );
     } catch (e) {
       print(e);
@@ -63,19 +67,12 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8),
-              child: Image.asset(
-                "assets/img/flutter.png",
-                height: 100,
-                width: 100,
-                errorBuilder: (context, error, stackTrace) {
-                  return const Icon(
-                    Icons.flutter_dash,
-                    size: 80,
-                    color: Colors.blue,
-                  );
-                },
+            const Padding(
+              padding: EdgeInsets.all(8),
+              child: Icon(
+                Icons.flutter_dash,
+                size: 80,
+                color: Colors.blue,
               ),
             ),
             Container(
